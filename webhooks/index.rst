@@ -9,15 +9,20 @@ Webhooks
 by Daniel Greenfeld
 
 * http://pydanny.com
-* http://twoscoopspress.org
-* Senior Python Engineer at Eventbrite.com
+* http://twoscoopspress.org (Two Scoops of Django)
+* http://cartwheelweb.com
+* Senior Python Engineer at `Eventbrite.com`_ (June 3rd)
 
-Webhooks?
+.. _`Eventbrite.com`: http://eventbrite.com
+
+Webhooks
 ====================
 
+What are webhooks?
 
-What are Webhooks?
--------------------
+
+Definition of Webhooks
+-----------------------
 
 * https://en.wikipedia.org/wiki/Webhook
 * A method of augmenting or altering the behavior of a web page, or web application, with custom callbacks. 
@@ -40,8 +45,8 @@ Django Packages Example
 * Historical Note: 3.5 years ago we were asked by GitHub to change from hourly to daily.
 * In a short period of time we make about 7000 API requests. 
 
-Django Packages with Webhook
-------------------------------
+Django Packages using Github Webhook
+-------------------------------------
 
 * Added a receiver view: http://bit.ly/djangopackages-webhook-view
 * You can add a webhook manually:
@@ -135,14 +140,21 @@ Takeaways
 
 What came out of this...
 
-Caching and Encoding
----------------------------
+Caching
+-------
 
+* ``django.utils.functional.cached_property``
+* But outside of Django
+* https://pypi.python.org/pypi/cached-property
+* With theading support!
 
+JSON Encoding
+--------------
 
-* **webhooks** needed something like ``django.utils.functional.cached_property``
-* https://pypi.python.org/pypi/cached-property (with threading support!)
-* **webhooks** and **dj-webhooks** needed a better JSON encoder (tests!)
+* **webhooks** and **dj-webhooks** needed a better JSON encoder.
+* DateTime objects
+* Decimals
+* Testable code
 * https://pypi.python.org/pypi/json262
 
 Functional vs OO Thoughts
