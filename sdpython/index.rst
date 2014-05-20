@@ -52,6 +52,8 @@ Django Packages with Webhook
 Webhooks are Great!
 -----------------------
 
+.. rst-class:: build
+
 * Receiving them is easy.
 * But writing an extendable library to send them? 
 * Let's take a look!
@@ -71,6 +73,8 @@ Design considerations
 
 Webhook Naming Problem
 -------------------------
+
+.. rst-class:: build
 
 * Webhooks is a terrible name.
 * Hook is for fishing
@@ -133,6 +137,8 @@ What came out of this...
 
 Caching and Encoding
 ---------------------------
+
+.. rst-class:: build
 
 * **webhooks** needed something like ``django.utils.functional.cached_property``
 * https://pypi.python.org/pypi/cached-property (with threading support!)
