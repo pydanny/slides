@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Webhooks &mdash; Webhooks 2014.05.20 documentation</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/styles.css" type="text/css" />
+    <link rel="stylesheet" href="_static/slides.css" type="text/css" />
+    
+
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2014.05.20',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/common.js"></script>
+    <script type="text/javascript" src="_static/slides.js"></script>
+    <script type="text/javascript" src="_static/sync.js"></script>
+    <script type="text/javascript" src="_static/controller.js"></script>
+    <script type="text/javascript" src="_static/init.js"></script>
+    
+    <link rel="top" title="Webhooks 2014.05.20 documentation" href="#" /> 
+  </head>
+  <body>
+
+<section
+   id="slide_container"
+   class='slides layout-regular'>
+
+
+  <article class="slide level-1" id="webhooks">
+<h1>Webhooks</h1>
+<p>by Daniel Greenfeld</p>
+<ul class="simple">
+<li><a class="reference external" href="http://pydanny.com">http://pydanny.com</a></li>
+<li><a class="reference external" href="http://twoscoopspress.org">http://twoscoopspress.org</a></li>
+<li>Senior Python Engineer at Eventbrite.com</li>
+</ul>
+
+</article>
+<article class="slide level-1" id="id1">
+<h1>Webhooks?</h1>
+
+</article>
+<article class="slide level-2" id="what-are-webhooks">
+<h2>What are Webhooks?</h2>
+<ul class="simple">
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Webhook">https://en.wikipedia.org/wiki/Webhook</a></li>
+<li>A method of augmenting or altering the behavior of a web page, or web application, with custom callbacks.</li>
+<li>The server pushes to the consumer, rather than the consumer pulls from the server.</li>
+<li>Push (Webhook) vs Pull (Traditional API)</li>
+<li>Great for SOA and SaaS</li>
+</ul>
+
+</article>
+<article class="slide level-2" id="advantages-of-webhooks">
+<h2>Advantages of Webhooks</h2>
+<ul class="simple">
+<li>Performance friendly to server and client</li>
+<li>The client doesn't need to poll the server constantly</li>
+<li>The server lets the client know when things are ready.</li>
+</ul>
+
+</article>
+<article class="slide level-2" id="django-packages-example">
+<h2>Django Packages Example</h2>
+<ul class="simple">
+<li><a class="reference external" href="https://www.djangopackages.com">https://www.djangopackages.com</a></li>
+<li>Django Packages polls Github and BitBucket once every 24 hours for each package on the system.</li>
+<li>Historical Note: 3.5 years ago we were asked by GitHub to change from hourly to daily.</li>
+<li>In a short period of time we make about 7000 API requests.</li>
+</ul>
+
+</article>
+<article class="slide level-2" id="django-packages-with-webhook">
+<h2>Django Packages with Webhook</h2>
+<ul class="simple">
+<li>Added a receiver view: <a class="reference external" href="http://bit.ly/djangopackages-webhook-view">http://bit.ly/djangopackages-webhook-view</a></li>
+<li>You can add a webhook manually:</li>
+<li><a class="reference external" href="https://www.djangopackages.com/packages/github-webhook/">https://www.djangopackages.com/packages/github-webhook/</a></li>
+<li>Or add as a service (Demonstrate)</li>
+<li>Many less requests to GitHub. Hooray!</li>
+</ul>
+
+</article>
+<article class="slide level-2" id="webhooks-are-great">
+<h2>Webhooks are Great!</h2>
+<ul class="simple">
+<li>Receiving them is easy.</li>
+<li>But writing an extendable library to send them?</li>
+<li>Let's take a look!</li>
+</ul>
+
+</article>
+<article class="slide level-1" id="building-a-webhook-library">
+<h1>Building a Webhook Library</h1>
+
+</article>
+<article class="slide level-2" id="design-considerations">
+<h2>Design considerations</h2>
+<ul class="simple">
+<li>Pleasant developer experience</li>
+<li>Keep code abstraction to a minimum</li>
+<li>Make introspectable</li>
+<li>Make extending it very easy (functional vs OO)</li>
+<li>Make new senders easy to write</li>
+<li>Make tests easy to write</li>
+</ul>
+
+</article>
+<article class="slide level-2" id="webhook-naming-problem">
+<h2>Webhook Naming Problem</h2>
+<ul class="simple">
+<li>Webhooks is a terrible name.</li>
+<li>Hook is for fishing</li>
+<li>Hooking is for ....</li>
+</ul>
+
+</article>
+<article class="slide level-2" id="my-in-progress-implementation">
+<h2>My In-Progress Implementation</h2>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/pydanny/webhooks">https://github.com/pydanny/webhooks</a></li>
+<li><a class="reference external" href="https://github.com/pydanny/webhooks#usage">https://github.com/pydanny/webhooks#usage</a></li>
+<li><a class="reference external" href="http://pypi.python.org/pypi/webhooks">http://pypi.python.org/pypi/webhooks</a></li>
+</ul>
+
+</article>
+<article class="slide level-2" id="django-integration">
+<h2>Django Integration</h2>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/pydanny/dj-webhooks">https://github.com/pydanny/dj-webhooks</a></li>
+<li><a class="reference external" href="https://github.com/pydanny/dj-webhooks#quickstart">https://github.com/pydanny/dj-webhooks#quickstart</a></li>
+<li><a class="reference external" href="http://pypi.python.org/pypi/dj-webhooks">http://pypi.python.org/pypi/dj-webhooks</a></li>
+</ul>
+
+</article>
+<article class="slide level-2" id="decorator-construction">
+<h2>Decorator Construction</h2>
+<ul class="simple">
+<li>Defined a base_hook function as a decorator</li>
+<li><a class="reference external" href="http://bit.ly/pydanny-webooks-L16-L49">http://bit.ly/pydanny-webooks-L16-L49</a></li>
+<li>Used partial to provide a good default</li>
+<li><a class="reference external" href="http://bit.ly/webhooks-decorators-L53">http://bit.ly/webhooks-decorators-L53</a></li>
+<li>Partial Reference: <a class="reference external" href="http://pydanny.com/python-partials-are-fun.html">http://pydanny.com/python-partials-are-fun.html</a></li>
+</ul>
+
+</article>
+<article class="slide level-2" id="sender-construction">
+<h2>Sender Construction</h2>
+<p>The sender_callable</p>
+<ul class="simple">
+<li>function: handy, but not easily extendable</li>
+<li><a class="reference external" href="http://bit.ly/webhooks-simple">http://bit.ly/webhooks-simple</a></li>
+</ul>
+<p>The senderable class</p>
+<ul class="simple">
+<li>Class: Not as handy, Easily extentable</li>
+<li><a class="reference external" href="http://bit.ly/webhooks-senderable">http://bit.ly/webhooks-senderable</a></li>
+</ul>
+
+</article>
+<article class="slide level-2" id="example-dj-webhooks">
+<h2>Example: dj-webhooks</h2>
+<p>The sender_callable</p>
+<ul class="simple">
+<li>function: copied, not extended</li>
+<li><a class="reference external" href="http://bit.ly/webhooks-orm-L73-L127">http://bit.ly/webhooks-orm-L73-L127</a></li>
+</ul>
+<p>The senderable object</p>
+<ul class="simple">
+<li>Class: extended the original</li>
+<li><a class="reference external" href="http://bit.ly/djwebhooks-senderable-L48-L70">http://bit.ly/djwebhooks-senderable-L48-L70</a></li>
+</ul>
+
+</article>
+<article class="slide level-1" id="takeaways">
+<h1>Takeaways</h1>
+<p>What came out of this...</p>
+
+</article>
+<article class="slide level-2" id="caching-and-encoding">
+<h2>Caching and Encoding</h2>
+<ul class="simple">
+<li><strong>webhooks</strong> needed something like <tt class="docutils literal"><span class="pre">django.utils.functional.cached_property</span></tt></li>
+<li><a class="reference external" href="https://pypi.python.org/pypi/cached-property">https://pypi.python.org/pypi/cached-property</a> (with threading support!)</li>
+<li><strong>webhooks</strong> and <strong>dj-webhooks</strong> needed a better JSON encoder (tests!)</li>
+<li><a class="reference external" href="https://pypi.python.org/pypi/json262">https://pypi.python.org/pypi/json262</a></li>
+</ul>
+
+</article>
+<article class="slide level-2" id="functional-vs-oo-thoughts">
+<h2>Functional vs OO Thoughts</h2>
+<ul class="simple">
+<li>Functional code is awesome, but lean-and-mean OO is great.</li>
+<li>Both are wonderful until they get bloated.</li>
+<li>Don't try to stick to a paradigm if doing so makes ugly code.</li>
+</ul>
+
+</article>
+<article class="slide level-2" id="implementation">
+<h2>Implementation!</h2>
+<ul class="simple">
+<li>Able to implement Webhooks in a working project quickly.</li>
+<li>Able to extend dj-webhooks into projects in a loosely coupled way.</li>
+<li>Show internal project code if there is time.</li>
+</ul>
+
+</article>
+<article class="slide level-1" id="finis">
+<h1>Finis</h1>
+<p>Questions?</p>
+
+</article>
+
+
+</section>
+
+<section id="slide_notes">
+
+</section>
+
+  </body>
+</html>
