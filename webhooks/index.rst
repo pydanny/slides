@@ -8,6 +8,10 @@ Webhooks
 
 by Daniel Greenfeld
 
+
+Me
+===
+
 * http://pydanny.com
 * http://twoscoopspress.org (Two Scoops of Django)
 * http://cartwheelweb.com
@@ -15,10 +19,8 @@ by Daniel Greenfeld
 
 .. _`Eventbrite.com`: http://eventbrite.com
 
-Webhooks
+What are Webhooks?
 ====================
-
-What are webhooks?
 
 
 Definition of Webhooks
@@ -53,8 +55,8 @@ What if GitHub pushed to Django Packages?
 
     * ``commit.push``
     
-* We could remove about 3K-5K GitHub API requests per day.
-* Eventually remove more, but that's the first pass.
+* We removed about 3K-5K GitHub API requests per day.
+* Eventually we'll remove more, but that's the first pass.
 
 Definition of Webhooks
 -----------------------
@@ -66,21 +68,45 @@ Advantages of Webhooks
 -------------------------
 
 * Performance friendly to server and client.
+
+    * **66x according to http://resthooks.org!!!**
+    * Don't know if that's true. but it's dramatic.
+
 * The client doesn't need to poll the server constantly.
 * The server lets the client know when things are ready.
 
-Django Packages using Github Webhook
+Django Packages / Github Webhook
 -------------------------------------
 
-* Added a receiver view: http://bit.ly/djangopackages-webhook-view
-* You can add a webhook manually:
+Added a receiver view
+
+.. code-block:: python
+
+    @csrf_view_exempt
+    def github_webhook(request):
+        if request.method == "POST":
+            data = json.loads(request.POST['payload'])
+
+            # Webhook Test
+            if "zen" in data:
+                return HttpResponse(data['hook_id'])
+        # moar code after this
+    
+http://bit.ly/djangopackages-webhook-view
+
+Django Packages / Github Webhook
+-------------------------------------
+
+* Add a webhook manually:
 * Go to your app's settings:
 
 1. Repo: http://bit.ly/1m6EfcB
 2. URL: https://www.djangopackages.com/packages/github-webhook/
 
-Django Packages Github Service Webhook
+Django Packages / Github Service
 ---------------------------------------
+
+* Just a webhook written in Ruby hosted by Github
 
 .. image:: http://cdn.shopify.com/s/files/1/0304/6901/files/github-service.png?305
    :name: Django Packages Github Service Webhook
@@ -162,31 +188,146 @@ Did I get it working?
 Decorator-based API
 ---------------------------------
 
-* Great for API design
-* https://gist.github.com/pydanny/1098c194138bc666955e
+Great for API design!
+
+.. code-block:: python
+
+    from webhooks import webhook
+    from webhooks.senders import targeted
+ 
+    @webhook(sender_callable=targeted.sender)
+    def basic(url, wife, husband):
+        return {"husband": husband, "wife": wife}
+ 
+    r = basic(url="http://httpbin.org/post", husband="Danny", wife="Audrey")
+    
+Results
+---------
+
+.. code-block:: python
+
+    >>> import pprint
+    >>> pprint.pprint(r)
+    {'attempt': 1,
+    'hash': '29788eb987104b8a87d201292fa459d9',
+    'husband': 'Danny',
+    'response': b'{snipped}',
+    'status_code': 200,
+    'url': 'http://httpbin.org/post',
+    'wife': 'Audrey'}
 
 Decorator-based API
 ---------------------------------
 
-* Defined a base_hook function as a decorator
+Defined a base_hook function as a decorator
 
-    * http://bit.ly/pydanny-webooks-L16-L49
-    
-* Extend hooks with Partials
+.. code-block:: python
+    :emphasize-lines: 2
 
-Partials 'extend' the Decorators
+    def base_hook(sender_callable, hash_function, **dkwargs):
+        @wrapt.decorator
+        def wrapper(wrapped, instance, args, kwargs):
+            if not callable(sender_callable):
+                raise SenderNotCallable(sender_callable)
+            hash_value = None
+            if hash_function is not None:
+                hash_value = hash_function()
+            return sender_callable(wrapped, dkwargs, hash_value, *args, **kwargs)
+        return wrapper
+        
+http://bit.ly/pydanny-webooks-L16-L49
+
+Partials 'extend' the Decorator
 --------------------------------
 
-* Used partial to provide a good default
-* Easy to create more
+Used partial to provide a good default
+
+.. code-block:: python
+    
+    from functools import partial
+
+    hook = partial(base_hook, hash_function=basic_hash_function)
+    
+.. rst-class:: build
+
+* Partials allow you to create new functions that are old functions with defaults.
+* Easy to create more hooks
 * Partial Reference: http://pydanny.com/python-partials-are-fun.html
 
+dj-webhooks partials example
+----------------------------
+
+.. code-block:: python
+    :emphasize-lines: 1, 5, 11
+
+    from functools import partial
+    from .senders import orm_callable, redislog_hook
+
+    # The pure ORM callable.
+    hook = partial(
+        base_hook,
+        sender_callable=orm_callable,
+        hash_function=basic_hash_function
+    )
+    # The ORM/redislog callable.
+    hook = partial(
+        base_hook,
+        sender_callable=redislog_hook,
+        hash_function=basic_hash_function
+    )
 
 My In-Progress Implementation
 ------------------------------
 
 * https://github.com/pydanny/webhooks
 * https://github.com/pydanny/webhooks#usage
+
+sender_callable
+------------------------------
+
+.. code-block:: python
+    :emphasize-lines: 6, 8-11, 13
+
+    #webhooks.senders.targeted
+    from .base import Senderable, value_in
+
+    ATTEMPTS = [0, 1, 2, 3]
+
+
+    def sender(wrapped, dkwargs, hash_value=None, *args, **kwargs):
+        senderobj = Senderable(
+            wrapped, dkwargs, hash_value, ATTEMPTS, *args, **kwargs
+        )
+
+        senderobj.url = value_in("url", dkwargs, kwargs)
+        return senderobj.send()
+        
+Senderable Class
+------------------------------
+
+.. code-block:: python
+    :emphasize-lines: 8
+
+    #webhooks.senders.base
+    class Senderable(object):
+        #cached properties
+        url
+        payload
+        jsonified_payload
+        
+        # action methods designed to be easily overwritten
+        get_url()
+        get_payload()
+        get_jsonified_payload()
+        notify()
+        send() # makes the attempts and uses notify()
+        
+Senderable Class (What it does)
+--------------------------------
+
+* Serializes the data
+* Makes all the attempts
+* Records the response
 
 Sender Construction
 ------------------------------
@@ -201,12 +342,6 @@ The senderable class
 * Class: Not as handy, Easily extendable
 * http://bit.ly/webhooks-senderable
 
-Senderable Class
------------------
-
-* Serializes the data
-* Makes all the attempts
-* Records the response
 
 Django Integration
 ------------------------------
@@ -227,6 +362,69 @@ The senderable object
 * Class: extended the original
 * http://bit.ly/djwebhooks-senderable-L48-L70
 
+dj-webhooks sender_callable I 
+------------------------------
+
+* Trying to avoid function argument mess. Slow refactor.
+
+.. code-block:: python
+
+    def orm_callable(wrapped, dkwargs, hash_value=None, *args, **kwargs):
+
+        if "event" not in dkwargs:
+            msg = "djwebhooks.decorators.hook requires an 'event' argument in the decorator."
+            raise TypeError(msg)
+        event = dkwargs['event']
+        
+        # Check for two more arguments. Truncated for space.
+        
+        senderobj = DjangoSenderable(
+                wrapped, dkwargs, hash_value, WEBHOOK_ATTEMPTS, *args, **kwargs
+        )
+
+        
+dj-webhooks sender_callable II 
+------------------------------
+
+.. code-block:: python
+
+    try:
+        senderobj.webhook_target = WebhookTarget.objects.get(
+            event=event,
+            owner=owner,
+            identifier=identifier
+        )
+    except WebhookTarget.DoesNotExist:
+        return {"error": "WebhookTarget not found"}
+    senderobj.url = senderobj.webhook_target.target_url
+    senderobj.payload = senderobj.get_payload()
+    senderobj.payload['owner'] = getattr(kwargs['owner'], WEBHOOK_OWNER_FIELD)
+    senderobj.payload['event'] = dkwargs['event']
+
+    return senderobj.send()
+    
+dj-webhooks Senderable
+-----------------------
+
+.. code-block:: python
+    :emphasize-lines: 3
+
+    class DjangoSenderable(Senderable):
+
+        def notify(self, message):
+            if self.success:
+                Delivery.objects.create(
+                    webhook_target=self.webhook_target,
+                    payload=self.payload,
+                    # truncated for space
+                )
+            else:
+                Delivery.objects.create(
+                    webhook_target=self.webhook_target,
+                    payload=self.payload,
+                    # truncated for space
+                )
+
 Senderable Class
 -----------------
 
@@ -238,8 +436,24 @@ Senderable Class
 Example in Action
 -------------------
 
-* Every time a project is updated:
-* https://gist.github.com/pydanny/6345bb10e76a039e7172
+Every time a project is updated:
+
+
+.. code-block:: python
+    :emphasize-lines: 3, 9-12
+
+    # This assumes the project update was committed by user 'audreyr'
+ 
+    @hjwebhooks.decorators.hook(event="project.update") 
+    def send_project_update(project, owner, identifier):
+        """ :event: i.e. GitHub commit.push. Not unique! 
+            :owner: Who created a webhook. I.E. pydanny
+            :identifier: A owner or system defined key."""
+        # Add MOAR logic here as needed
+        return {
+                'title': project.title,
+                'description': project.description,
+                # Truncated for space
 
 The Problem of Time
 ----------------------
@@ -253,7 +467,32 @@ How to Make it Fasterrerer?
 
 * Asynchronous task/job queues
 * Celery or RedisQ
-* https://gist.github.com/pydanny/5540527049e4da55611a
+
+Example of Fasterrererer
+---------------------------
+
+.. code-block:: python
+    :emphasize-lines: 3,13
+
+    from django_rq import job
+
+    @job
+    @djwebhooks.decorators.ook(event="project.update") 
+    def send_project_update(project, owner, identifier):
+        """ :event: i.e. GitHub commit.push. Not unique! 
+            :owner: Who created a webhook. I.E. pydanny
+            :identifier: A owner or system defined key.
+        """
+        # Add MOAR logic here as needed
+        return {
+                # Truncated for space
+    send_project_update.delay()
+    
+Testing (Unit vs Functional)
+================================
+
+* Easier to test against http://httpbin.org than not
+* Trying to stay in units, but not losing sleep over it
 
 
 Takeaways
