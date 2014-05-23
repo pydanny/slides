@@ -127,11 +127,18 @@ Webhooks are Great!
 What about sending Webhooks?
 ----------------------------
 
-* It's just python-requests? Right?
+* It's just python-requests, right?
 * Every time a user commits an action, python-requests just sends something out!
+* Easy!!!
+
+.. rst-class:: build
+
+* Well... actually...
 
 It's a bit more complicated...
 ---------------------------------
+
+Planning for failure:
 
 * How do you track push failures?
 * How many repeats of push failures do you allow?
@@ -141,11 +148,15 @@ It's a bit more complicated...
 More complications...
 -----------------------
 
+Planning for developers using your system:
+
 * How can developer-users add a webhook?
-* How can developer-users introspect adding a webhook?
+* How can developer-users introspect what a webhook is doing?
 
 More complications...
 --------------------------
+
+Making your stuff work all the time:
 
 * How do you write tests?
 * Do you write unit tests or functional tests?
@@ -153,7 +164,9 @@ More complications...
 ... and more complications!
 -----------------------------
 
-* Performance
+Time is money:
+
+* Sending
 
     * requests is fast
     * HTTP is slooooooow
