@@ -17,9 +17,9 @@ Me
 * http://pydanny.com
 * http://twoscoopspress.org (Two Scoops of Django)
 * http://cartwheelweb.com
-* Senior Python Engineer at `Eventbrite.com`_ (June 3rd)
+* Senior Python Engineer at `Eventbrite`_ (June 3rd)
 
-.. _`Eventbrite.com`: http://eventbrite.com
+.. _`Eventbrite`: http://eventbrite.com
 
 What are Webhooks?
 ====================
