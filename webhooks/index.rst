@@ -138,7 +138,7 @@ What about sending Webhooks?
 It's a bit more complicated...
 ---------------------------------
 
-Planning for failure:
+**Planning for failure:**
 
 * How do you track push failures?
 * How many repeats of push failures do you allow?
@@ -148,7 +148,7 @@ Planning for failure:
 More complications...
 -----------------------
 
-Planning for developers using your system:
+**Planning for developers using your system:**
 
 * How can developer-users add a webhook?
 * How can developer-users introspect what a webhook is doing?
@@ -156,7 +156,7 @@ Planning for developers using your system:
 More complications...
 --------------------------
 
-Making your stuff work all the time:
+**Making your stuff work all the time:**
 
 * How do you write tests?
 * Do you write unit tests or functional tests?
@@ -164,7 +164,7 @@ Making your stuff work all the time:
 ... and more complications!
 -----------------------------
 
-Time is money:
+**Time is money:**
 
 * Sending
 
