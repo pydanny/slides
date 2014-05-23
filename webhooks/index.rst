@@ -364,19 +364,6 @@ Django Integration
 * https://github.com/pydanny/dj-webhooks
 * https://github.com/pydanny/dj-webhooks#quickstart
 
-Example: dj-webhooks
-------------------------------
-
-The sender_callable
-
-* function: copied, not extended
-* http://bit.ly/webhooks-orm-L73-L127
-
-The senderable object
-
-* Class: extended the original
-* http://bit.ly/djwebhooks-senderable-L48-L70
-
 dj-webhooks sender_callable I 
 ------------------------------
 
@@ -448,6 +435,20 @@ Senderable Class
 * Records the response (in the ORM)
 
 
+Example: dj-webhooks
+------------------------------
+
+The sender_callable
+
+* function: copied, not extended
+* http://bit.ly/webhooks-orm-L73-L127
+
+The senderable object
+
+* Class: extended the original
+* http://bit.ly/djwebhooks-senderable-L48-L70
+
+
 Example in Action
 -------------------
 
@@ -459,7 +460,7 @@ Every time a project is updated:
 
     # This assumes the project update was committed by user 'audreyr'
  
-    @hjwebhooks.decorators.hook(event="project.update") 
+    @djwebhooks.decorators.hook(event="project.update") 
     def send_project_update(project, owner, identifier):
         """ :event: i.e. GitHub commit.push. Not unique! 
             :owner: Who created a webhook. I.E. pydanny
