@@ -14,12 +14,15 @@ http://bit.ly/webhook-slides
 Me
 ===
 
-* http://pydanny.com
 * http://twoscoopspress.org (Two Scoops of Django)
+* http://pydanny.com
 * http://cartwheelweb.com
 * Senior Python Engineer at `Eventbrite`_ (June 3rd)
 
+*I talk fast. Let me know if I need to slow down.*
+
 .. _`Eventbrite`: http://eventbrite.com
+
 
 What are Webhooks?
 ====================
@@ -409,10 +412,10 @@ dj-webhooks Senderable
 -----------------------
 
 .. code-block:: python
-    :emphasize-lines: 3
+    :emphasize-lines: 2-3
 
     class DjangoSenderable(Senderable):
-
+        # Only method overridden
         def notify(self, message):
             if self.success:
                 Delivery.objects.create(
@@ -424,7 +427,7 @@ dj-webhooks Senderable
                 Delivery.objects.create(
                     webhook_target=self.webhook_target,
                     payload=self.payload,
-                    # truncated for space
+                    ... # truncated for space
                 )
 
 Senderable Class
@@ -469,7 +472,7 @@ Every time a project is updated:
         return {
                 'title': project.title,
                 'description': project.description,
-                # Truncated for space
+                ... } # truncated for space
 
 The Problem of Time
 ----------------------
@@ -493,15 +496,15 @@ Example of Fasterrererer
     from django_rq import job
 
     @job
-    @djwebhooks.decorators.ook(event="project.update") 
+    @djwebhooks.decorators.hook(event="project.update") 
     def send_project_update(project, owner, identifier):
         """ :event: i.e. GitHub commit.push. Not unique! 
             :owner: Who created a webhook. I.E. pydanny
             :identifier: A owner or system defined key.
         """
         # Add MOAR logic here as needed
-        return {
-                # Truncated for space
+        return {'title': project.title,
+                ... # Truncated for space
     send_project_update.delay()
     
 Testing (Unit vs Functional)
