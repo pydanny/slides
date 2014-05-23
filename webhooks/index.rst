@@ -19,8 +19,6 @@ Me
 * http://cartwheelweb.com
 * Senior Python Engineer at `Eventbrite`_ (June 3rd)
 
-*I talk fast. Let me know if I need to slow down.*
-
 .. _`Eventbrite`: http://eventbrite.com
 
 
@@ -74,8 +72,8 @@ Advantages of Webhooks
 
 * Performance friendly to server and client.
 
-    * **66x according to http://resthooks.org!!!**
-    * Don't know if that's true. but it's dramatic.
+    * **66x according to http://resthooks.org!!1!!!1**
+    * *Don't know if that 66x is true, but it sounds dramatic.*
 
 * The client doesn't need to poll the server constantly.
 * The server lets the client know when things are ready.
@@ -105,8 +103,8 @@ Django Packages / Github Webhook
 * Add a webhook manually:
 * Go to your app's settings:
 
-1. Repo: http://bit.ly/1m6EfcB
-2. URL: https://www.djangopackages.com/packages/github-webhook/
+1. Repo: https://github.com/<user>/<repo>/settings/hooks
+2. Target URL: https://www.djangopackages.com/packages/github-webhook/
 
 Django Packages / Github Service
 ---------------------------------------
@@ -203,10 +201,10 @@ Enough Background
 
 Did I get it working?
 
-Decorator-based API
----------------------------------
+Decorators are great for API design
+-------------------------------------
 
-Great for API design!
+Decorator-based API
 
 .. code-block:: python
 
@@ -214,10 +212,11 @@ Great for API design!
     from webhooks.senders import targeted
  
     @webhook(sender_callable=targeted.sender)
-    def basic(url, wife, husband):
-        return {"husband": husband, "wife": wife}
+    def basic(url, spouse, person):
+        # Payload function must return a JSON serializable object.
+        return {"person": person, "spouse": spouse}
  
-    r = basic(url="http://httpbin.org/post", husband="Danny", wife="Audrey")
+    r = basic(url="http://httpbin.org/post", person="Danny", spouse="Audrey")
     
 Results
 ---------
@@ -268,9 +267,9 @@ Used partial to provide a good default
     
 .. rst-class:: build
 
-* Partials allow you to create new functions that are old functions with defaults.
+* Partials allow you to create new functions that are previously written functions with defaults.
 * Easy to create more hooks
-* Partial Reference: http://pydanny.com/python-partials-are-fun.html
+* http://pydanny.com/python-partials-are-fun.html
 
 dj-webhooks partials example
 ----------------------------
@@ -279,18 +278,18 @@ dj-webhooks partials example
     :emphasize-lines: 1, 5, 11
 
     from functools import partial
-    from .senders import orm_callable, redislog_hook
+    from .senders import orm_callable, redislog_callable
 
     # The pure ORM callable.
-    hook = partial(
+    orm_hook = partial(
         base_hook,
         sender_callable=orm_callable,
         hash_function=basic_hash_function
     )
     # The ORM/redislog callable.
-    hook = partial(
+    redislog_hook = partial(
         base_hook,
-        sender_callable=redislog_hook,
+        sender_callable=redislog_callable,
         hash_function=basic_hash_function
     )
 
@@ -541,7 +540,7 @@ JSON Encoding
 Functional vs OO Thoughts
 ---------------------------
 
-* Functional code is awesome, but lean-and-mean OO is great.
+* Functional code is awesome, but lean-and-mean OO is great too.
 * Both are wonderful until they get bloated.
 * Don't try to stick to a paradigm if doing so makes ugly code.
 
@@ -552,7 +551,7 @@ Results!
 * Clearly written and well tested code.
 * Able to implement Webhooks in a working project quickly.
 * Able to extend dj-webhooks into projects in a loosely coupled way.
-* Not yet done documented it properly
+* Needs better/moar/fixed documentation!
 
 
 Finis
