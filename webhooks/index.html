@@ -45,15 +45,16 @@
   <article class="slide level-1" id="webhooks">
 <h1>Webhooks</h1>
 <p>by Daniel Greenfeld</p>
+<p><a class="reference external" href="http://bit.ly/webhook-slides">http://bit.ly/webhook-slides</a></p>
 
 </article>
 <article class="slide level-1" id="me">
 <h1>Me</h1>
 <ul class="simple">
-<li><a class="reference external" href="http://pydanny.com">http://pydanny.com</a></li>
 <li><a class="reference external" href="http://twoscoopspress.org">http://twoscoopspress.org</a> (Two Scoops of Django)</li>
+<li><a class="reference external" href="http://pydanny.com">http://pydanny.com</a></li>
 <li><a class="reference external" href="http://cartwheelweb.com">http://cartwheelweb.com</a></li>
-<li>Senior Python Engineer at <a class="reference external" href="http://eventbrite.com">Eventbrite.com</a> (June 3rd)</li>
+<li>Senior Python Engineer at <a class="reference external" href="http://eventbrite.com">Eventbrite</a> (June 3rd)</li>
 </ul>
 
 </article>
@@ -131,8 +132,8 @@
 <li><p class="first">Performance friendly to server and client.</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>66x according to http://resthooks.org!!!</strong></li>
-<li>Don't know if that's true. but it's dramatic.</li>
+<li><strong>66x according to http://resthooks.org!!1!!!1</strong></li>
+<li><em>Don't know if that 66x is true, but it sounds dramatic.</em></li>
 </ul>
 </div></blockquote>
 </li>
@@ -167,8 +168,8 @@
 <li>Go to your app's settings:</li>
 </ul>
 <ol class="arabic simple">
-<li>Repo: <a class="reference external" href="http://bit.ly/1m6EfcB">http://bit.ly/1m6EfcB</a></li>
-<li>URL: <a class="reference external" href="https://www.djangopackages.com/packages/github-webhook/">https://www.djangopackages.com/packages/github-webhook/</a></li>
+<li>Repo: <a class="reference external" href="https://github.com">https://github.com</a>/&lt;user&gt;/&lt;repo&gt;/settings/hooks</li>
+<li>Target URL: <a class="reference external" href="https://www.djangopackages.com/packages/github-webhook/">https://www.djangopackages.com/packages/github-webhook/</a></li>
 </ol>
 
 </article>
@@ -192,13 +193,18 @@
 <article class="slide level-2" id="what-about-sending-webhooks">
 <h2>What about sending Webhooks?</h2>
 <ul class="simple">
-<li>It's just python-requests? Right?</li>
+<li>It's just python-requests, right?</li>
 <li>Every time a user commits an action, python-requests just sends something out!</li>
+<li>Easy!!!</li>
+</ul>
+<ul class="build simple">
+<li>Well... actually...</li>
 </ul>
 
 </article>
 <article class="slide level-2" id="it-s-a-bit-more-complicated">
 <h2>It's a bit more complicated...</h2>
+<p><strong>Planning for failure:</strong></p>
 <ul class="simple">
 <li>How do you track push failures?</li>
 <li>How many repeats of push failures do you allow?</li>
@@ -209,14 +215,16 @@
 </article>
 <article class="slide level-2" id="more-complications">
 <h2>More complications...</h2>
+<p><strong>Planning for developers using your system:</strong></p>
 <ul class="simple">
 <li>How can developer-users add a webhook?</li>
-<li>How can developer-users introspect adding a webhook?</li>
+<li>How can developer-users introspect what a webhook is doing?</li>
 </ul>
 
 </article>
 <article class="slide level-2" id="id3">
 <h2>More complications...</h2>
+<p><strong>Making your stuff work all the time:</strong></p>
 <ul class="simple">
 <li>How do you write tests?</li>
 <li>Do you write unit tests or functional tests?</li>
@@ -225,8 +233,9 @@
 </article>
 <article class="slide level-2" id="and-more-complications">
 <h2>... and more complications!</h2>
+<p><strong>Time is money:</strong></p>
 <ul>
-<li><p class="first">Performance</p>
+<li><p class="first">Sending</p>
 <blockquote>
 <div><ul class="simple">
 <li>requests is fast</li>
@@ -272,17 +281,18 @@
 <p>Did I get it working?</p>
 
 </article>
-<article class="slide level-2" id="decorator-based-api">
-<h2>Decorator-based API</h2>
-<p>Great for API design!</p>
+<article class="slide level-2" id="decorators-are-great-for-api-design">
+<h2>Decorators are great for API design</h2>
+<p>Decorator-based API</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">webhooks</span> <span class="kn">import</span> <span class="n">webhook</span>
 <span class="kn">from</span> <span class="nn">webhooks.senders</span> <span class="kn">import</span> <span class="n">targeted</span>
 
 <span class="nd">@webhook</span><span class="p">(</span><span class="n">sender_callable</span><span class="o">=</span><span class="n">targeted</span><span class="o">.</span><span class="n">sender</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">basic</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">wife</span><span class="p">,</span> <span class="n">husband</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s">&quot;husband&quot;</span><span class="p">:</span> <span class="n">husband</span><span class="p">,</span> <span class="s">&quot;wife&quot;</span><span class="p">:</span> <span class="n">wife</span><span class="p">}</span>
+<span class="k">def</span> <span class="nf">basic</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">spouse</span><span class="p">,</span> <span class="n">person</span><span class="p">):</span>
+    <span class="c"># Payload function must return a JSON serializable object.</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">&quot;person&quot;</span><span class="p">:</span> <span class="n">person</span><span class="p">,</span> <span class="s">&quot;spouse&quot;</span><span class="p">:</span> <span class="n">spouse</span><span class="p">}</span>
 
-<span class="n">r</span> <span class="o">=</span> <span class="n">basic</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s">&quot;http://httpbin.org/post&quot;</span><span class="p">,</span> <span class="n">husband</span><span class="o">=</span><span class="s">&quot;Danny&quot;</span><span class="p">,</span> <span class="n">wife</span><span class="o">=</span><span class="s">&quot;Audrey&quot;</span><span class="p">)</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">basic</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s">&quot;http://httpbin.org/post&quot;</span><span class="p">,</span> <span class="n">person</span><span class="o">=</span><span class="s">&quot;Danny&quot;</span><span class="p">,</span> <span class="n">spouse</span><span class="o">=</span><span class="s">&quot;Audrey&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 
@@ -302,7 +312,7 @@
 </div>
 
 </article>
-<article class="slide level-2" id="id4">
+<article class="slide level-2" id="decorator-based-api">
 <h2>Decorator-based API</h2>
 <p>Defined a base_hook function as a decorator</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">base_hook</span><span class="p">(</span><span class="n">sender_callable</span><span class="p">,</span> <span class="n">hash_function</span><span class="p">,</span> <span class="o">**</span><span class="n">dkwargs</span><span class="p">):</span>
@@ -329,27 +339,27 @@
 </pre></div>
 </div>
 <ul class="build simple">
-<li>Partials allow you to create new functions that are old functions with defaults.</li>
+<li>Partials allow you to create new functions that are previously written functions with defaults.</li>
 <li>Easy to create more hooks</li>
-<li>Partial Reference: <a class="reference external" href="http://pydanny.com/python-partials-are-fun.html">http://pydanny.com/python-partials-are-fun.html</a></li>
+<li><a class="reference external" href="http://pydanny.com/python-partials-are-fun.html">http://pydanny.com/python-partials-are-fun.html</a></li>
 </ul>
 
 </article>
 <article class="slide level-2" id="dj-webhooks-partials-example">
 <h2>dj-webhooks partials example</h2>
 <div class="highlight-python"><div class="highlight"><pre><span class="hll"><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
-</span><span class="kn">from</span> <span class="nn">.senders</span> <span class="kn">import</span> <span class="n">orm_callable</span><span class="p">,</span> <span class="n">redislog_hook</span>
+</span><span class="kn">from</span> <span class="nn">.senders</span> <span class="kn">import</span> <span class="n">orm_callable</span><span class="p">,</span> <span class="n">redislog_callable</span>
 
 <span class="c"># The pure ORM callable.</span>
-<span class="hll"><span class="n">hook</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+<span class="hll"><span class="n">orm_hook</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
 </span>    <span class="n">base_hook</span><span class="p">,</span>
     <span class="n">sender_callable</span><span class="o">=</span><span class="n">orm_callable</span><span class="p">,</span>
     <span class="n">hash_function</span><span class="o">=</span><span class="n">basic_hash_function</span>
 <span class="p">)</span>
 <span class="c"># The ORM/redislog callable.</span>
-<span class="hll"><span class="n">hook</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+<span class="hll"><span class="n">redislog_hook</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
 </span>    <span class="n">base_hook</span><span class="p">,</span>
-    <span class="n">sender_callable</span><span class="o">=</span><span class="n">redislog_hook</span><span class="p">,</span>
+    <span class="n">sender_callable</span><span class="o">=</span><span class="n">redislog_callable</span><span class="p">,</span>
     <span class="n">hash_function</span><span class="o">=</span><span class="n">basic_hash_function</span>
 <span class="p">)</span>
 </pre></div>
@@ -433,26 +443,13 @@
 </ul>
 
 </article>
-<article class="slide level-2" id="example-dj-webhooks">
-<h2>Example: dj-webhooks</h2>
-<p>The sender_callable</p>
-<ul class="simple">
-<li>function: copied, not extended</li>
-<li><a class="reference external" href="http://bit.ly/webhooks-orm-L73-L127">http://bit.ly/webhooks-orm-L73-L127</a></li>
-</ul>
-<p>The senderable object</p>
-<ul class="simple">
-<li>Class: extended the original</li>
-<li><a class="reference external" href="http://bit.ly/djwebhooks-senderable-L48-L70">http://bit.ly/djwebhooks-senderable-L48-L70</a></li>
-</ul>
-
-</article>
 <article class="slide level-2" id="dj-webhooks-sender-callable-i">
 <h2>dj-webhooks sender_callable I</h2>
 <ul class="simple">
-<li>Trying to avoid function argument mess. Slow refactor.</li>
+<li>Trying to avoid function argument mess.</li>
 </ul>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">orm_callable</span><span class="p">(</span><span class="n">wrapped</span><span class="p">,</span> <span class="n">dkwargs</span><span class="p">,</span> <span class="n">hash_value</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># This code makes me unhappy. Slowly refactoring.</span>
+<span class="k">def</span> <span class="nf">orm_callable</span><span class="p">(</span><span class="n">wrapped</span><span class="p">,</span> <span class="n">dkwargs</span><span class="p">,</span> <span class="n">hash_value</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
     <span class="k">if</span> <span class="s">&quot;event&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dkwargs</span><span class="p">:</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;djwebhooks.decorators.hook requires an &#39;event&#39; argument in the decorator.&quot;</span>
@@ -460,7 +457,6 @@
     <span class="n">event</span> <span class="o">=</span> <span class="n">dkwargs</span><span class="p">[</span><span class="s">&#39;event&#39;</span><span class="p">]</span>
 
     <span class="c"># Check for two more arguments. Truncated for space.</span>
-
     <span class="n">senderobj</span> <span class="o">=</span> <span class="n">DjangoSenderable</span><span class="p">(</span>
             <span class="n">wrapped</span><span class="p">,</span> <span class="n">dkwargs</span><span class="p">,</span> <span class="n">hash_value</span><span class="p">,</span> <span class="n">WEBHOOK_ATTEMPTS</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span>
@@ -491,8 +487,8 @@
 <article class="slide level-2" id="dj-webhooks-senderable">
 <h2>dj-webhooks Senderable</h2>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">DjangoSenderable</span><span class="p">(</span><span class="n">Senderable</span><span class="p">):</span>
-
-<span class="hll">    <span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+<span class="hll">    <span class="c"># Only method overridden</span>
+</span><span class="hll">    <span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
 </span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
             <span class="n">Delivery</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
                 <span class="n">webhook_target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">webhook_target</span><span class="p">,</span>
@@ -503,13 +499,13 @@
             <span class="n">Delivery</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
                 <span class="n">webhook_target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">webhook_target</span><span class="p">,</span>
                 <span class="n">payload</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">payload</span><span class="p">,</span>
-                <span class="c"># truncated for space</span>
+                <span class="o">...</span> <span class="c"># truncated for space</span>
             <span class="p">)</span>
 </pre></div>
 </div>
 
 </article>
-<article class="slide level-2" id="id5">
+<article class="slide level-2" id="id4">
 <h2>Senderable Class</h2>
 <ul class="simple">
 <li>Serializes the data</li>
@@ -518,12 +514,26 @@
 </ul>
 
 </article>
+<article class="slide level-2" id="example-dj-webhooks">
+<h2>Example: dj-webhooks</h2>
+<p>The sender_callable</p>
+<ul class="simple">
+<li>function: copied, not extended</li>
+<li><a class="reference external" href="http://bit.ly/webhooks-orm-L73-L127">http://bit.ly/webhooks-orm-L73-L127</a></li>
+</ul>
+<p>The senderable object</p>
+<ul class="simple">
+<li>Class: extended the original</li>
+<li><a class="reference external" href="http://bit.ly/djwebhooks-senderable-L48-L70">http://bit.ly/djwebhooks-senderable-L48-L70</a></li>
+</ul>
+
+</article>
 <article class="slide level-2" id="example-in-action">
 <h2>Example in Action</h2>
 <p>Every time a project is updated:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># This assumes the project update was committed by user &#39;audreyr&#39;</span>
 
-<span class="hll"><span class="nd">@hjwebhooks.decorators.hook</span><span class="p">(</span><span class="n">event</span><span class="o">=</span><span class="s">&quot;project.update&quot;</span><span class="p">)</span>
+<span class="hll"><span class="nd">@djwebhooks.decorators.hook</span><span class="p">(</span><span class="n">event</span><span class="o">=</span><span class="s">&quot;project.update&quot;</span><span class="p">)</span>
 </span><span class="k">def</span> <span class="nf">send_project_update</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">identifier</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; :event: i.e. GitHub commit.push. Not unique!</span>
 <span class="sd">        :owner: Who created a webhook. I.E. pydanny</span>
@@ -532,7 +542,7 @@
 <span class="hll">    <span class="k">return</span> <span class="p">{</span>
 </span><span class="hll">            <span class="s">&#39;title&#39;</span><span class="p">:</span> <span class="n">project</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
 </span><span class="hll">            <span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="n">project</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
-</span><span class="hll">            <span class="c"># Truncated for space</span>
+</span><span class="hll">            <span class="o">...</span> <span class="p">}</span> <span class="c"># truncated for space</span>
 </span></pre></div>
 </div>
 
@@ -559,15 +569,15 @@
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django_rq</span> <span class="kn">import</span> <span class="n">job</span>
 
 <span class="hll"><span class="nd">@job</span>
-</span><span class="nd">@djwebhooks.decorators.ook</span><span class="p">(</span><span class="n">event</span><span class="o">=</span><span class="s">&quot;project.update&quot;</span><span class="p">)</span>
+</span><span class="nd">@djwebhooks.decorators.hook</span><span class="p">(</span><span class="n">event</span><span class="o">=</span><span class="s">&quot;project.update&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">send_project_update</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">owner</span><span class="p">,</span> <span class="n">identifier</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; :event: i.e. GitHub commit.push. Not unique!</span>
 <span class="sd">        :owner: Who created a webhook. I.E. pydanny</span>
 <span class="sd">        :identifier: A owner or system defined key.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c"># Add MOAR logic here as needed</span>
-    <span class="k">return</span> <span class="p">{</span>
-            <span class="c"># Truncated for space</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">&#39;title&#39;</span><span class="p">:</span> <span class="n">project</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
+            <span class="o">...</span> <span class="c"># Truncated for space</span>
 <span class="hll"><span class="n">send_project_update</span><span class="o">.</span><span class="n">delay</span><span class="p">()</span>
 </span></pre></div>
 </div>
@@ -611,19 +621,19 @@
 <article class="slide level-2" id="functional-vs-oo-thoughts">
 <h2>Functional vs OO Thoughts</h2>
 <ul class="simple">
-<li>Functional code is awesome, but lean-and-mean OO is great.</li>
+<li>Functional code is awesome, but lean-and-mean OO is great too.</li>
 <li>Both are wonderful until they get bloated.</li>
 <li>Don't try to stick to a paradigm if doing so makes ugly code.</li>
 </ul>
 
 </article>
-<article class="slide level-2" id="id6">
+<article class="slide level-2" id="id5">
 <h2>Results!</h2>
 <ul class="simple">
 <li>Clearly written and well tested code.</li>
 <li>Able to implement Webhooks in a working project quickly.</li>
 <li>Able to extend dj-webhooks into projects in a loosely coupled way.</li>
-<li>Not yet done documented it properly</li>
+<li>Needs better/moar/fixed documentation!</li>
 </ul>
 
 </article>

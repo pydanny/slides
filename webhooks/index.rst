@@ -8,16 +8,19 @@ Webhooks
 
 by Daniel Greenfeld
 
+http://bit.ly/webhook-slides
+
 
 Me
 ===
 
-* http://pydanny.com
 * http://twoscoopspress.org (Two Scoops of Django)
+* http://pydanny.com
 * http://cartwheelweb.com
-* Senior Python Engineer at `Eventbrite.com`_ (June 3rd)
+* Senior Python Engineer at `Eventbrite`_ (June 3rd)
 
-.. _`Eventbrite.com`: http://eventbrite.com
+.. _`Eventbrite`: http://eventbrite.com
+
 
 What are Webhooks?
 ====================
@@ -69,8 +72,8 @@ Advantages of Webhooks
 
 * Performance friendly to server and client.
 
-    * **66x according to http://resthooks.org!!!**
-    * Don't know if that's true. but it's dramatic.
+    * **66x according to http://resthooks.org!!1!!!1**
+    * *Don't know if that 66x is true, but it sounds dramatic.*
 
 * The client doesn't need to poll the server constantly.
 * The server lets the client know when things are ready.
@@ -100,8 +103,8 @@ Django Packages / Github Webhook
 * Add a webhook manually:
 * Go to your app's settings:
 
-1. Repo: http://bit.ly/1m6EfcB
-2. URL: https://www.djangopackages.com/packages/github-webhook/
+1. Repo: https://github.com/<user>/<repo>/settings/hooks
+2. Target URL: https://www.djangopackages.com/packages/github-webhook/
 
 Django Packages / Github Service
 ---------------------------------------
@@ -125,11 +128,18 @@ Webhooks are Great!
 What about sending Webhooks?
 ----------------------------
 
-* It's just python-requests? Right?
+* It's just python-requests, right?
 * Every time a user commits an action, python-requests just sends something out!
+* Easy!!!
+
+.. rst-class:: build
+
+* Well... actually...
 
 It's a bit more complicated...
 ---------------------------------
+
+**Planning for failure:**
 
 * How do you track push failures?
 * How many repeats of push failures do you allow?
@@ -139,11 +149,15 @@ It's a bit more complicated...
 More complications...
 -----------------------
 
+**Planning for developers using your system:**
+
 * How can developer-users add a webhook?
-* How can developer-users introspect adding a webhook?
+* How can developer-users introspect what a webhook is doing?
 
 More complications...
 --------------------------
+
+**Making your stuff work all the time:**
 
 * How do you write tests?
 * Do you write unit tests or functional tests?
@@ -151,7 +165,9 @@ More complications...
 ... and more complications!
 -----------------------------
 
-* Performance
+**Time is money:**
+
+* Sending
 
     * requests is fast
     * HTTP is slooooooow
@@ -185,10 +201,10 @@ Enough Background
 
 Did I get it working?
 
-Decorator-based API
----------------------------------
+Decorators are great for API design
+-------------------------------------
 
-Great for API design!
+Decorator-based API
 
 .. code-block:: python
 
@@ -196,10 +212,11 @@ Great for API design!
     from webhooks.senders import targeted
  
     @webhook(sender_callable=targeted.sender)
-    def basic(url, wife, husband):
-        return {"husband": husband, "wife": wife}
+    def basic(url, spouse, person):
+        # Payload function must return a JSON serializable object.
+        return {"person": person, "spouse": spouse}
  
-    r = basic(url="http://httpbin.org/post", husband="Danny", wife="Audrey")
+    r = basic(url="http://httpbin.org/post", person="Danny", spouse="Audrey")
     
 Results
 ---------
@@ -250,9 +267,9 @@ Used partial to provide a good default
     
 .. rst-class:: build
 
-* Partials allow you to create new functions that are old functions with defaults.
+* Partials allow you to create new functions that are previously written functions with defaults.
 * Easy to create more hooks
-* Partial Reference: http://pydanny.com/python-partials-are-fun.html
+* http://pydanny.com/python-partials-are-fun.html
 
 dj-webhooks partials example
 ----------------------------
@@ -261,18 +278,18 @@ dj-webhooks partials example
     :emphasize-lines: 1, 5, 11
 
     from functools import partial
-    from .senders import orm_callable, redislog_hook
+    from .senders import orm_callable, redislog_callable
 
     # The pure ORM callable.
-    hook = partial(
+    orm_hook = partial(
         base_hook,
         sender_callable=orm_callable,
         hash_function=basic_hash_function
     )
     # The ORM/redislog callable.
-    hook = partial(
+    redislog_hook = partial(
         base_hook,
-        sender_callable=redislog_hook,
+        sender_callable=redislog_callable,
         hash_function=basic_hash_function
     )
 
@@ -349,26 +366,14 @@ Django Integration
 * https://github.com/pydanny/dj-webhooks
 * https://github.com/pydanny/dj-webhooks#quickstart
 
-Example: dj-webhooks
-------------------------------
-
-The sender_callable
-
-* function: copied, not extended
-* http://bit.ly/webhooks-orm-L73-L127
-
-The senderable object
-
-* Class: extended the original
-* http://bit.ly/djwebhooks-senderable-L48-L70
-
 dj-webhooks sender_callable I 
 ------------------------------
 
-* Trying to avoid function argument mess. Slow refactor.
+* Trying to avoid function argument mess.
 
 .. code-block:: python
 
+    # This code makes me unhappy. Slowly refactoring.
     def orm_callable(wrapped, dkwargs, hash_value=None, *args, **kwargs):
 
         if "event" not in dkwargs:
@@ -376,8 +381,7 @@ dj-webhooks sender_callable I
             raise TypeError(msg)
         event = dkwargs['event']
         
-        # Check for two more arguments. Truncated for space.
-        
+        # Check for two more arguments. Truncated for space. 
         senderobj = DjangoSenderable(
                 wrapped, dkwargs, hash_value, WEBHOOK_ATTEMPTS, *args, **kwargs
         )
@@ -407,10 +411,10 @@ dj-webhooks Senderable
 -----------------------
 
 .. code-block:: python
-    :emphasize-lines: 3
+    :emphasize-lines: 2-3
 
     class DjangoSenderable(Senderable):
-
+        # Only method overridden
         def notify(self, message):
             if self.success:
                 Delivery.objects.create(
@@ -422,7 +426,7 @@ dj-webhooks Senderable
                 Delivery.objects.create(
                     webhook_target=self.webhook_target,
                     payload=self.payload,
-                    # truncated for space
+                    ... # truncated for space
                 )
 
 Senderable Class
@@ -431,6 +435,20 @@ Senderable Class
 * Serializes the data
 * Makes all the attempts
 * Records the response (in the ORM)
+
+
+Example: dj-webhooks
+------------------------------
+
+The sender_callable
+
+* function: copied, not extended
+* http://bit.ly/webhooks-orm-L73-L127
+
+The senderable object
+
+* Class: extended the original
+* http://bit.ly/djwebhooks-senderable-L48-L70
 
 
 Example in Action
@@ -444,7 +462,7 @@ Every time a project is updated:
 
     # This assumes the project update was committed by user 'audreyr'
  
-    @hjwebhooks.decorators.hook(event="project.update") 
+    @djwebhooks.decorators.hook(event="project.update") 
     def send_project_update(project, owner, identifier):
         """ :event: i.e. GitHub commit.push. Not unique! 
             :owner: Who created a webhook. I.E. pydanny
@@ -453,7 +471,7 @@ Every time a project is updated:
         return {
                 'title': project.title,
                 'description': project.description,
-                # Truncated for space
+                ... } # truncated for space
 
 The Problem of Time
 ----------------------
@@ -477,15 +495,15 @@ Example of Fasterrererer
     from django_rq import job
 
     @job
-    @djwebhooks.decorators.ook(event="project.update") 
+    @djwebhooks.decorators.hook(event="project.update") 
     def send_project_update(project, owner, identifier):
         """ :event: i.e. GitHub commit.push. Not unique! 
             :owner: Who created a webhook. I.E. pydanny
             :identifier: A owner or system defined key.
         """
         # Add MOAR logic here as needed
-        return {
-                # Truncated for space
+        return {'title': project.title,
+                ... # Truncated for space
     send_project_update.delay()
     
 Testing (Unit vs Functional)
@@ -522,7 +540,7 @@ JSON Encoding
 Functional vs OO Thoughts
 ---------------------------
 
-* Functional code is awesome, but lean-and-mean OO is great.
+* Functional code is awesome, but lean-and-mean OO is great too.
 * Both are wonderful until they get bloated.
 * Don't try to stick to a paradigm if doing so makes ugly code.
 
@@ -533,7 +551,7 @@ Results!
 * Clearly written and well tested code.
 * Able to implement Webhooks in a working project quickly.
 * Able to extend dj-webhooks into projects in a loosely coupled way.
-* Not yet done documented it properly
+* Needs better/moar/fixed documentation!
 
 
 Finis
