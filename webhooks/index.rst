@@ -367,10 +367,11 @@ Django Integration
 dj-webhooks sender_callable I 
 ------------------------------
 
-* Trying to avoid function argument mess. Slow refactor.
+* Trying to avoid function argument mess.
 
 .. code-block:: python
 
+    # This code makes me unhappy. Slowly refactoring.
     def orm_callable(wrapped, dkwargs, hash_value=None, *args, **kwargs):
 
         if "event" not in dkwargs:
@@ -378,8 +379,7 @@ dj-webhooks sender_callable I
             raise TypeError(msg)
         event = dkwargs['event']
         
-        # Check for two more arguments. Truncated for space.
-        
+        # Check for two more arguments. Truncated for space. 
         senderobj = DjangoSenderable(
                 wrapped, dkwargs, hash_value, WEBHOOK_ATTEMPTS, *args, **kwargs
         )
