@@ -1,4 +1,4 @@
-var PERMANENT_URL_PREFIX = DOCUMENTATION_OPTIONS.URL_ROOT + '_static/';
+var PERMANENT_URL_PREFIX = DOCUMENTATION_OPTIONS.URL_ROOT + 'static/';
 
 var SLIDE_CLASSES = ['far-past', 'past', 'current', 'next', 'far-next'];
 var SLIDES_SELECTOR = 'section.slides > article';
