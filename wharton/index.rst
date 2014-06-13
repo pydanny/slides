@@ -78,6 +78,9 @@ Witness:
 
 * ColdFusion instead of options
 * Zope instead of Django
+* Refusing naming standards "just be consistent"
+* Allowing low bus factor
+* Allowing irresponsible behavior
 
 
 Major Decision: Technical
@@ -88,3 +91,32 @@ Witness:
 * BigTable instead of Relational
 * Documents instead of Records
 * EAVs instead of Documents
+* Refusing tests
+
+Stay Modest
+==================================
+
+* You aren't the smartest
+* You always have to learn
+* Anyone who thinks they are the answer to the problems is a problem
+
+
+Principals
+============
+
+* Simplicity
+
+	* Your project's will be enough to complicate things
+
+* Have tests
+
+	* Even if the test coverage is low, have it working
+	* Unit tests are best
+	* Functional tests are better than nothing
+	* Integration tests are better than nothing
+
+* Have standards
+
+	* Use the language standards
+	* Document the standards
+	* 
