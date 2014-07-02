@@ -37,6 +37,13 @@ We'll fix it in the next Version 2!
 * You are doing construction on a property people are living in
 * https://twitter.com/AcademicsSay/status/461290570082947074/photo/1
 
+Version Control
+=================
+
+It's 2014
+
+* Fire any developer who refuses to use version control
+* Don't work at any place without version control
 
 
 Caveat: The Constant of Worst Code
@@ -144,7 +151,6 @@ Principals
 
 	* Use the language standards
 	* Document the standards
-	* 	
 
 
 
@@ -172,3 +178,13 @@ Managers - Who do you listen to?
 * The engineer who clocks 6-10 hours a day, who makes their deadlines like clockwork?
 * The hard-to-reach engineer who holds the mission critical pieces?
 
+
+
+Engineering vs Operations
+==========================
+
+* Operations and Engineering need to make their processes known to each other
+* On a code release, engineers need to be there
+* On a code release, operations needs to be accessible
+* http://pydanny.blogspot.com/2009/09/sys-admins-what-your-developers-want.html
+* http://elephantangelchild.blogspot.com/2009/05/developers-what-your-system-admins-want.html
