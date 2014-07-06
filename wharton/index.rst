@@ -33,18 +33,31 @@ The parallels of foundation, construction, management, team, and maintenance are
 We'll fix it in the next Version 2!
 ====================================
 
-* Dangerous (Digg, Oraqnge, etc)
+* Often used as an excuse for bad code
+* Founders/engineers justify ignoring technical debt
+
+But Rewrites Take Years
+------------------------
+
 * You are doing construction on a property people are living in
 * https://twitter.com/AcademicsSay/status/461290570082947074/photo/1
+* Have to be careful not to break things
 
-Version Control
-=================
+Rewrites Can Be Dangerous
+--------------------------
 
-It's 2014
+* Digg: lost their reader base
+* Oraqnge: TODO summary
 
-* Fire any developer who refuses to use version control
-* Don't work at any place without version control
+Technical Debt
+==============
 
+* It's a loan against the future
+
+	* Get it done fast!
+	* Switch the requirements!
+	* Test later!
+	* Pivot!
 
 Caveat: The Constant of Worst Code
 ===================================
@@ -92,21 +105,50 @@ Be Understanding
 	* You never know when circumstances will be reversed.
 
 
-Technical Debt
-==============
+Principles
+============
 
-* It's a loan against the future
+Simplicity
+-----------
 
-	* Get it done fast!
-	* Switch the requirements!
-	* Test later!
-	* Pivot!
+* Your project's needs will be enough to complicate things
+* Even the simplest projects grow organically to be complex
+
+Have Tests
+----------
+
+* Tests will be critical in times of need (TODO explain)
+
+	* Even if the test coverage is low, have it working
+	* Unit tests are best
+	* Functional tests are better than nothing
+	* Integration tests are better than nothing
+
+Have Standards
+--------------
+
+* All code should be the same style, as if written by 1 person
+
+	* Use the language standards
+	* Document the standards
+
+Version Control
+----------------
+
+It's 2014
+
+* Version control is a best practice and necessity
+* Fire any developer who refuses to use version control
+* Don't work at any place without version control
 
 
-Major Decisions: Political
-==========================
+Major Decisions
+===============
 
-Witness:
+Ignore Politics
+----------------
+
+I've witnessed political decisions on:
 
 * ColdFusion instead of options
 * Zope instead of Django
@@ -114,77 +156,108 @@ Witness:
 * Allowing low bus factor
 * Allowing irresponsible behavior
 
+Educate Yourself
+-----------------
 
-Major Decision: Technical
-==========================
-
-Witness:
+I've witnessed uninformed major technical decisions:
 
 * BigTable instead of Relational
 * Documents instead of Records
 * EAVs instead of Documents
 * Refusing tests
 
+Choosing a Technology
+----------------------
+
+Infant mortality amongst (web)frameworks and languages is ridiculously high, choosing wrong can get expensive very rapidly.
+(https://twitter.com/jmattheij/status/468677218823323648)
+
+Be Conservative
+----------------
+
+* Never experiment directly on your main codebase with technologies you don't understand
+* Try new technologies in side hobby projects first
+
 Stay Modest
-==================================
+------------
 
 * You aren't the smartest
 * You always have to learn
 * Anyone who thinks they are the answer to the problems is a problem
 
 
-Principals
-============
-
-* Simplicity
-
-	* Your project's will be enough to complicate things
-
-* Have tests
-
-	* Even if the test coverage is low, have it working
-	* Unit tests are best
-	* Functional tests are better than nothing
-	* Integration tests are better than nothing
-
-* Have standards
-
-	* Use the language standards
-	* Document the standards
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Choosing Tech
-==============
-
-Infant mortality amongst (web)frameworks and languages is ridiculously high, choosing wrong can get expensive very rapidly.
-(https://twitter.com/jmattheij/status/468677218823323648)
-
-Managers - Who do you listen to?
+Engineering Management
 ==================================
+
+Who do you listen to?
 
 * The engineer who clocks 16 hours a day, who tells you everything wonderful that they do?
 * The engineer who clocks 6-10 hours a day, who makes their deadlines like clockwork?
 * The hard-to-reach engineer who holds the mission critical pieces?
 
+The Bottom Line
+-----------------
 
+* Communication channels should be open, within and across teams
+* Deadlines should be met
+* Mission-critical knowledge should be documented
+* Releases should go smoothly, with team support
 
 Engineering vs Operations
-==========================
+-------------------------
 
 * Operations and Engineering need to make their processes known to each other
 * On a code release, engineers need to be there
 * On a code release, operations needs to be accessible
 * http://pydanny.blogspot.com/2009/09/sys-admins-what-your-developers-want.html
 * http://elephantangelchild.blogspot.com/2009/05/developers-what-your-system-admins-want.html
+
+
+
+Tricks for Achieving Minimalism
+===============================
+
+Minimalist Code
+----------------
+
+* Keep the codebase as small and minimal as possible
+* Fight scope creep
+
+Code Reuse
+----------
+
+* "But it's just 2 lines of code!" they say.
+* Use open-source libraries
+* Especially ones that do one thing and do it well
+
+Example: cached-property
+------------------------
+
+* 3 (TODO check) lines of code that people typically copy/paste into projects
+* Created open-source library for this
+* Result: received code fixes on threading issues
+
+Engineering Incentives
+-----------------------
+
+* Reward engineers for reducing # of lines of code
+* Photo of Code Removal Gnome at Eventbrite
+
+
+
+Archictecture Considerations
+=============================
+
+Early Phases
+-------------
+
+While a project is young:
+
+* Small codebase
+* Vanilla codebase
+* Tests from the start
+
+As Project Grows
+----------------
+
+* TODO
