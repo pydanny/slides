@@ -13,10 +13,14 @@ Description
 
 The decisions made in the beginning of a project are the ones you are stuck with for years. A early bad decision for a project can cost organizations time, money, and engineering resources throughout it's lifetime. In this session we’ll attempt to answer the following questions: How do you take scale into consideration during the early stages of a project? How do you do this without using up the critical ramp-up time of a project or organization? Finally, how do you fix critical problems when they arise without bringing everything down?
 
+* How do you take scale into consideration during the early stages of a project?
+* How do you do this without using up the critical ramp-up time of a project or organization?
+* Finally, how do you fix critical problems when they arise without bringing everything down?
+
 Intro
 ========
 
-About an hour's drive from here, over in New Jersey is where my maternal grandparents lived. I grew up spending my vacations there, in their house. This house, you see, was magical. Not just because it was where my grandparents lived until they passed away. Because my grandpa designed it himself. Built in the 1950s by a family of recent immigrants to the USA from scratch, way before pre-built frames were acceptable for the middle class.
+About 60 from here, over in New Jersey is where my maternal grandparents lived. I grew up spending my vacations there, in their house. This house, you see, was magical. Not just because it was where my grandparents lived until they passed away. Because my grandpa designed it himself. Built in the 1950s by a father and his son from scratch, way before pre-built frames were acceptable for the middle class.
 
 One of my favorite stories of the construction of the house was how a single son of the family insisted on doing the chimney himself. I've been told it took the guy six months to assemble it, and it was clearly worth the effort. To me it was perfect, without a blemish.
 
@@ -30,27 +34,114 @@ Software projects are like houses.
 
 The parallels of foundation, construction, management, team, and maintenance are very closely related.
 
+* How did they scale (or build) the house on schedule? How did they maintain quality?
+
+	* They didn't build the house on schedule.
+
+	* Some parts were solid (foundations, chimney), others were not (Balcony)
+
+* How did they fix critical projects when they occured?
+
+	* The foundation was very solid so that wasn't a problem
+	* The balcony was an issue, but my grandparents swept it under the rug.
+
+As software engineers, can we do better?
+
+
+First Two Questions (Scaling)
+===================================
+
+* How do you scale in the early stages?
+* AKA Making it work for the planned user base
+* ...on schedule
+
+
+95% of the Time: YAGNI
+------------------------------
+
+You Aren't Going to Need It
+
+* Most projects don't have millions of users on Day 1
+* Learn the best practices for your toolset
+* If things get busy, that's when you scale.
+
+The 5% Problem
+---------------
+
+On Launch Day:
+
+* The President of the USA says, "Register Here!"
+* A project that's part of a Major Motion picture launch
+* Someone with millions of social media followers who tweets about your project.
+
+
+Some 1% Answers
+-----------------
+
+First Two Questions
+~~~~~~~~~~~~~~~~~~~~
+
+* Is there caching?
+* Are there indexes on the datastore?
+
+If the answer to either of these is "No", then this needs to be fixed.
+
+* Easy Wins
+
+Other Common Solutions
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* Build better infrastructure
+
+	* TODO: Show the chart from TSD 1.6
+	* DevOps is hot.
+
+* Pay for X as a Service
+
+	* Google App Engine, Heroku
+	* Imagine paying $480,000 year!
+	* What costs more: Developer time or X Service?
+	* Do the math!
+
+Some 1% Red Herrings
+----------------------
+
+* Switch tools
+
+	* Ruby
+
+* Switch primary datastore
+
+
+
+
+
+Rant Time
+===========
+
+
+
 We'll fix it in the next Version 2!
-====================================
+------------------------------------
 
 * Often used as an excuse for bad code
 * Founders/engineers justify ignoring technical debt
 
 But Rewrites Take Years
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 * You are doing construction on a property people are living in
 * https://twitter.com/AcademicsSay/status/461290570082947074/photo/1
 * Have to be careful not to break things
 
 Rewrites Can Be Dangerous
---------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * Digg: lost their reader base
-* Oraqnge: TODO summary
+* Orange: TODO summary
 
 Technical Debt
-==============
+----------------
 
 * It's a loan against the future
 
@@ -213,7 +304,6 @@ Engineering vs Operations
 * http://elephantangelchild.blogspot.com/2009/05/developers-what-your-system-admins-want.html
 
 
-
 Tricks for Achieving Minimalism
 ===============================
 
@@ -244,6 +334,12 @@ Engineering Incentives
 * Photo of Code Removal Gnome at Eventbrite
 
 
+Choosing Tech
+==============
+
+
+
+
 
 Archictecture Considerations
 =============================
@@ -260,4 +356,8 @@ While a project is young:
 As Project Grows
 ----------------
 
-* TODO
+* Operations and Engineering need to make their processes known to each other
+* On a code release, engineers need to be there
+* On a code release, operations needs to be accessible
+* http://pydanny.blogspot.com/2009/09/sys-admins-what-your-developers-want.html
+* http://elephantangelchild.blogspot.com/2009/05/developers-what-your-system-admins-want.html
