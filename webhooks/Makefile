@@ -180,4 +180,6 @@ pseudoxml:
 slides:
 	$(SPHINXBUILD) -b slides $(ALLSPHINXOPTS) $(BUILDDIR)/slides
 	@echo "Build finished. The HTML slides are in $(BUILDDIR)/slides."
+	cp -r assets _build/slides/
+	open _build/slides/index.html
 

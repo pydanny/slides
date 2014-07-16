@@ -20,7 +20,7 @@ The decisions made in the beginning of a project are the ones you are stuck with
 Intro
 ========
 
-About 60 from here, over in New Jersey is where my maternal grandparents lived. I grew up spending my vacations there, in their house. This house, you see, was magical. Not just because it was where my grandparents lived until they passed away. Because my grandpa designed it himself. Built in the 1950s by a father and his son from scratch, way before pre-built frames were acceptable for the middle class.
+About 60 miles from here, over in New Jersey is where my maternal grandparents lived. I grew up spending my vacations there, in their house. This house, you see, was magical. Not just because it was where my grandparents lived until they passed away. Because my grandpa designed it himself. Built in the 1950s by a father and his son from scratch, way before pre-built frames were acceptable for the middle class.
 
 One of my favorite stories of the construction of the house was how a single son of the family insisted on doing the chimney himself. I've been told it took the guy six months to assemble it, and it was clearly worth the effort. To me it was perfect, without a blemish.
 
@@ -46,6 +46,11 @@ The parallels of foundation, construction, management, team, and maintenance are
 	* The balcony was an issue, but my grandparents swept it under the rug.
 
 As software engineers, can we do better?
+
+In most cases...
+=================
+
+We Don't.
 
 
 First Two Questions (Scaling)
@@ -75,7 +80,7 @@ On Launch Day:
 * Someone with millions of social media followers who tweets about your project.
 
 
-Some 1% Answers
+Some 5% Answers
 -----------------
 
 First Two Questions
@@ -334,12 +339,6 @@ Engineering Incentives
 * Photo of Code Removal Gnome at Eventbrite
 
 
-Choosing Tech
-==============
-
-
-
-
 
 Archictecture Considerations
 =============================
@@ -361,3 +360,6 @@ As Project Grows
 * On a code release, operations needs to be accessible
 * http://pydanny.blogspot.com/2009/09/sys-admins-what-your-developers-want.html
 * http://elephantangelchild.blogspot.com/2009/05/developers-what-your-system-admins-want.html
+
+
+Micromanging

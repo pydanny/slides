@@ -11,17 +11,6 @@ by Daniel Greenfeld
 http://bit.ly/webhook-slides
 
 
-Me
-===
-
-* http://twoscoopspress.org (Two Scoops of Django)
-* http://pydanny.com
-* http://cartwheelweb.com
-* Senior Python Engineer at `Eventbrite`_ (June 3rd)
-
-.. _`Eventbrite`: http://eventbrite.com
-
-
 What are Webhooks?
 ====================
 
@@ -34,32 +23,56 @@ Definition of Webhooks
 * The server pushes to the consumer, rather than the consumer pulling from the server.
 
 Ugh
------
+====
 
-* I don't want to try and reword the previous slide.
-* I'm just going to give you an example.
+.. slide::
 
-Django Packages Example
--------------------------
+    * I don't want to try and reword the previous slide.
+    * I'm just going to **give you an example**.
 
-* https://www.djangopackages.com
-* Django Packages polls Github and BitBucket once every 24 hours for each package on the system.
-* In a short period of time we make about 7000 API requests.
-* Used to be hourly.
+Example: Django Packages
+=============================
 
-    * 3.5 years ago we were asked by GitHub to change from hourly to daily.
-    * They've grown since then.
+.. slide::
+
+    * https://www.djangopackages.com
+    * Polls Github and BitBucket
+
+        * For **each package on the system**.
+        * **once every 24 hours**
+
+.. slide::
+
+    * In a short period of time we make about **7000 API requests**.
+    * Used to be hourly.
+
+        * 3.5 years ago we were asked by GitHub to change from hourly to daily.
+        * They've grown since then.
 
 What if GitHub pushed to Django Packages?
--------------------------------------------
+============================================
 
-* I push code to pydanny/dj-stripe.
-* GitHub tells Django Packages that an update has occured
+.. slide::
 
-    * ``commit.push``
-    
+    * I push code to `pydanny/dj-stripe`_.
+
+        * ``commit.push``
+
+    * GitHub tells Django Packages that a ``git push`` has occured.
+    * We remove 3 GitHub API calls per package!
+
+    .. _`pydanny/dj-stripe`: https://github.com/pydanny/dj-stripe
+
+WEBSCALE!!!1!11!
+================
+
+End Result
+------------
+
 * We removed about 3K-5K GitHub API requests per day.
 * Eventually we'll remove more, but that's the first pass.
+
+
 
 Definition of Webhooks
 -----------------------
@@ -75,13 +88,13 @@ Advantages of Webhooks
     * **66x according to http://resthooks.org!!1!!!1**
     * *Don't know if that 66x is true, but it sounds dramatic.*
 
-* The client doesn't need to poll the server constantly.
-* The server lets the client know when things are ready.
+.. slide::
 
-Django Packages / Github Webhook
--------------------------------------
+    * The client doesn't need to poll the server constantly.
+    * The server lets the client know when things are ready.
 
-Added a receiver view
+Coding the Django Packages Webhook Receiver
+--------------------------------------------
 
 .. code-block:: python
 
@@ -94,22 +107,31 @@ Added a receiver view
             if "zen" in data:
                 return HttpResponse(data['hook_id'])
         # moar code after this
-    
+
 http://bit.ly/djangopackages-webhook-view
 
-Django Packages / Github Webhook
--------------------------------------
+Adding the Django Packages / Github Webhook
+=============================================
 
-* Add a webhook manually:
-* Go to your app's settings:
+.. slide::
 
-1. Repo: https://github.com/<user>/<repo>/settings/hooks
-2. Target URL: https://www.djangopackages.com/packages/github-webhook/
+    * Go to your app's settings:
 
-Django Packages / Github Service
----------------------------------------
+    1. Repo: https://github.com/<user>/<repo>/settings/hooks
+    2. Target URL: https://www.djangopackages.com/packages/github-webhook/
 
-* Just a webhook written in Ruby hosted by Github
+    .. image:: assets/github-webhook.png
+       :name: Django Packages Github Service
+       :align: center
+       :target: http:/www.djangopackages.com
+
+Adding the Django Packages / Github Service
+=============================================
+
+
+Just a webhook written in Ruby hosted by Github
+-------------------------------------------------
+
 
 .. image:: http://cdn.shopify.com/s/files/1/0304/6901/files/github-service.png?305
    :name: Django Packages Github Service Webhook
@@ -118,41 +140,53 @@ Django Packages / Github Service
 
 
 Webhooks are Great!
------------------------
+=====================
 
-* Receiving them is easy.
-* Just write a receiver view!
-
-... but what about sending webhooks?
-
-What about sending Webhooks?
-----------------------------
-
-* It's just python-requests, right?
-* Every time a user commits an action, python-requests just sends something out!
-* Easy!!!
+Receiving them is easy.
+=========================
 
 .. rst-class:: build
 
-* Well... actually...
+    * Write a receiver view
+    * Ask the site to send messages to the receiver view
+    * Debug
+
+But what about sending Webhooks?
+=================================
+
+.. slide::
+
+    * It's just **python-requests**, right?
+    * Every time a user commits an action, **python-requests** just sends something out!
+    * Easy!!!
+
+    .. rst-class:: build
+
+    * Well... actually...
 
 It's a bit more complicated...
----------------------------------
+================================
 
-**Planning for failure:**
+.. slide::
 
-* How do you track push failures?
-* How many repeats of push failures do you allow?
-* How often between push attempts?
-* How many push failures do you allow?
+    **Planning for failure:**
+
+    .. rst-class:: build
+
+    * How do you track **push failures**?
+    * How many **repeats of push failures** do you allow?
+    * How often between **push attempts**?
+    * How many push failures do you **allow**?
 
 More complications...
------------------------
+=======================
 
 **Planning for developers using your system:**
 
-* How can developer-users add a webhook?
-* How can developer-users introspect what a webhook is doing?
+.. slide::
+
+    * How can developer-users **add a webhook**?
+    * How can developer-users **introspect** what a webhook is doing?
 
 More complications...
 --------------------------
@@ -199,7 +233,7 @@ Webhook Naming Problem
 Enough Background
 -------------------
 
-Did I get it working?
+Did I get my webhooks library working?
 
 Decorators are great for API design
 -------------------------------------
@@ -216,7 +250,10 @@ Decorator-based API
         # Payload function must return a JSON serializable object.
         return {"person": person, "spouse": spouse}
  
-    r = basic(url="http://httpbin.org/post", person="Danny", spouse="Audrey")
+    r = basic(
+            url="http://httpbin.org/post",
+            person="Danny", spouse="Audrey"
+        )
     
 Results
 ---------
@@ -293,11 +330,33 @@ dj-webhooks partials example
         hash_function=basic_hash_function
     )
 
-My In-Progress Implementation
-------------------------------
+dj-webhooks partials example
+----------------------------
 
-* https://github.com/pydanny/webhooks
-* https://github.com/pydanny/webhooks#usage
+.. code-block:: python
+    :emphasize-lines: 2, 7, 13
+
+    from functools import partial
+    from .senders import orm_callable, redislog_callable
+
+    # The pure ORM callable.
+    orm_hook = partial(
+        base_hook,
+        sender_callable=orm_callable,
+        hash_function=basic_hash_function
+    )
+    # The ORM/redislog callable.
+    redislog_hook = partial(
+        base_hook,
+        sender_callable=redislog_callable,
+        hash_function=basic_hash_function
+    )
+
+.. My In-Progress Implementation
+.. ------------------------------
+
+.. * https://github.com/pydanny/webhooks
+.. * https://github.com/pydanny/webhooks#usage
 
 sender_callable
 ------------------------------
@@ -318,33 +377,35 @@ sender_callable
 
         senderobj.url = value_in("url", dkwargs, kwargs)
         return senderobj.send()
-        
-Senderable Class
-------------------------------
 
-.. code-block:: python
-    :emphasize-lines: 8
-
-    #webhooks.senders.base
-    class Senderable(object):
-        #cached properties
-        url
-        payload
-        jsonified_payload
-        
-        # action methods designed to be easily overwritten
-        get_url()
-        get_payload()
-        get_jsonified_payload()
-        notify()
-        send() # makes the attempts and uses notify()
-        
 Senderable Class (What it does)
 --------------------------------
 
 * Serializes the data
 * Makes all the attempts
 * Records the response
+
+Senderable Class
+------------------------------
+
+.. code-block:: python
+    :emphasize-lines: 12, 13, 14
+
+    #webhooks.senders.base
+    class Senderable(object):
+        # cached properties via
+        #   https://pypi.python.org/pypi/cached-property
+        url
+        payload
+        jsonified_payload
+
+        # action methods designed to be easily overwritten
+        get_url()
+        get_payload()
+        get_jsonified_payload() # serialize the data
+        send() # makes the attempts
+        notify() # records the response
+
 
 Sender Construction
 ------------------------------
@@ -380,13 +441,13 @@ dj-webhooks sender_callable I
             msg = "djwebhooks.decorators.hook requires an 'event' argument in the decorator."
             raise TypeError(msg)
         event = dkwargs['event']
-        
-        # Check for two more arguments. Truncated for space. 
+
+        # Check for two more arguments. Truncated for space.
         senderobj = DjangoSenderable(
                 wrapped, dkwargs, hash_value, WEBHOOK_ATTEMPTS, *args, **kwargs
         )
 
-        
+
 dj-webhooks sender_callable II 
 ------------------------------
 
@@ -554,7 +615,13 @@ Results!
 * Needs better/moar/fixed documentation!
 
 
-Finis
-======
+.. slide::
 
-Questions?
+    * http://twoscoopspress.org (Two Scoops of Django)
+    * http://pydanny.com
+    * http://cartwheelweb.com
+    * Senior Python Engineer at `Eventbrite`_
+
+    **We're Hiring!**
+
+    .. _`Eventbrite`: http://eventbrite.com
